@@ -113,9 +113,54 @@ function mostrarNotificacion(texto) {
 cargarPeliculas();
 
 
-const menuToggle = document.getElementById('menuToggle');
+const menuToggle = document.querySelector('.menu-toggle');
 const menu = document.getElementById('menu');
 
 menuToggle.addEventListener('click', () => {
     menu.classList.toggle('show');
+});
+
+
+
+
+
+
+
+
+
+const form = document.getElementById('contactForm');
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const data = new FormData(form);
+  try {
+    const res = await fetch(form.action, {
+      method: form.method,
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    });
+    if (res.ok) {
+      form.reset();
+      document.getElementById('successMsg').style.display = 'block';
+      document.getElementById('errorMsg').style.display = 'none';
+    } else {
+      document.getElementById('errorMsg').style.display = 'block';
+    }
+  } catch (err) {
+    document.getElementById('errorMsg').style.display = 'block';
+  }
+});
+
+
+
+const header = document.querySelector('header');
+const headerHeight = header.offsetHeight;
+
+window.addEventListener('scroll', () => {
+  if (window.scrollY > headerHeight) {
+    header.classList.add('sticky');
+    document.body.style.paddingTop = `${headerHeight}px`; // Evita que el contenido suba debajo del header
+  } else {
+    header.classList.remove('sticky');
+    document.body.style.paddingTop = '0';
+  }
 });

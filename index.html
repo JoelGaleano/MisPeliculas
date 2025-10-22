@@ -23,7 +23,7 @@
                 <button class="menu-toggle">&#9776;</button>
             </div>
 
-            <nav class="menu">
+            <nav id="menu" class="menu">
                 <ul>
                     <li><a href="#home">HOME</a></li>
                     <li><a href="#contenido">CONTENIDO</a></li>
@@ -52,9 +52,27 @@
                 </div>
 
             </section>
-            <section id="contacto">
 
-            </section>
+            
+            <section id="contacto" class="contacto">
+  <h2>Contacto</h2>
+
+  <form id="contactForm" action="https://formspree.io/f/mnqxyzab" method="POST" class="form-contacto">
+    <label for="name">Nombre:</label>
+    <input type="text" name="name" id="name" placeholder="Tu nombre" required>
+
+    <label for="email">Email:</label>
+    <input type="email" name="email" id="email" placeholder="Tu email" required>
+
+    <label for="message">Mensaje:</label>
+    <textarea name="message" id="message" placeholder="Escribe tu mensaje..." required></textarea>
+
+    <button type="submit">Enviar</button>
+
+    <div id="successMsg" class="form-msg success">¡Formulario enviado!</div>
+    <div id="errorMsg" class="form-msg error">Error al enviar el formulario.</div>
+  </form>
+</section>
 
         </main>
 
