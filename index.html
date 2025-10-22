@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,49 +9,73 @@
 
     <title>MisPeliculas</title>
 </head>
+
 <body>
-<div class="cajaprincipal">
-    <header>
+    <div class="cajaprincipal">
+        <header>
+            <div class="logo">MisPeliculas</div>
 
-        <div class="logo">MisPeliculas</div>
-
-        <nav class="menu">
-            <ul>
-                <li><a href="">HOME</a></li>
-                <li><a href="">CONTENIDO</a></li>
-                <li><a href="">CONTACTO</a></li>
-
-            </ul>
-        </nav>
-    </header>
-    
-    <main>
-
-        <section id="home" class="principal">
-            <img src="banner.jpg" alt="">
-            <div class="descripcion">
-            <h1>Mis Peliculas</h1>
-            <h2>Busca tus Peliculas preferidas</h2>
+            <!-- Grupo derecho: corazón + botón hamburguesa -->
+            <div class="header-right">
+                <a href="#" id="favoritosBtn" class="favoritos-btn">
+                    <h5>Favoritos❤️</h5> <span id="contadorFavoritos">0</span>
+                </a>
+                <button class="menu-toggle">&#9776;</button>
             </div>
-        </section>
-        <section id="contenido" class="content">
 
-            <h2>Contenido</h2>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto sunt laudantium, maxime amet recusandae culpa voluptate ipsa pariatur repellendus molestias
-                 aperiam incidunt similique. Corrupti qui voluptates deserunt modi, hic dolorem.</p>
-                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore quisquam esse tempore quasi eligendi nobis commodi adipisci officia quae. Saepe 
-                    magnam odio neque vero. Itaque sapiente dolores magni assumenda culpa!</p>
+            <nav class="menu">
+                <ul>
+                    <li><a href="#home">HOME</a></li>
+                    <li><a href="#contenido">CONTENIDO</a></li>
+                    <li><a href="#contacto">CONTACTO</a></li>
+                </ul>
+            </nav>
+        </header>
 
-        </section>
-        <section id="contacto">
+        <main>
 
-        </section>
+            <section id="home" class="principal">
+                <img src="banner.jpg" alt="">
+                <div class="descripcion">
+                    <h1>Mis Peliculas</h1>
+                    <h2>Busca tus Peliculas preferidas</h2>
+                </div>
+            </section>
+            <section id="contenido" class="content">
 
-    </main>
+                <h2>Contenido</h2>
+                <p>Explorá las películas más populares del momento:</p>
 
-    <footer>
+                <!-- Contenedor donde se van a mostrar las películas -->
+                <div id="peliculas" class="peliculas-grid">
 
-    </footer>
+                </div>
+
+            </section>
+            <section id="contacto">
+
+            </section>
+
+        </main>
+
+        <footer>
+            <p>© 2025 MisPeliculas. Todos los derechos reservados.</p>
+        </footer>
     </div>
+
+    <!-- Modal de Favoritos -->
+    <div id="modalFavoritos" class="modal">
+        <div class="modal-contenido">
+            <span id="cerrarModal" class="cerrar">&times;</span>
+            <h2>❤️ Mis Favoritos</h2>
+            <div id="listaFavoritos" class="lista-favoritos"></div>
+        </div>
+    </div>
+
+    <!-- Notificación -->
+    <div id="notificacion" class="notificacion"></div>
+
+    <script src="app.js"></script>
 </body>
+
 </html>
