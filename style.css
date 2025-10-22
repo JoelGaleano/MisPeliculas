@@ -22,6 +22,7 @@ h5 {
 p {
   font-family: 'Roboto', sans-serif;
   color: white;
+  margin-bottom: 1rem;
 }
 
 /* ---------- CAJA PRINCIPAL ---------- */
@@ -52,18 +53,15 @@ header {
   color: white;
 }
 
-/* Grupo derecho: menú + corazón */
 .header-right {
   display: flex;
   align-items: center;
   gap: 15px;
-  /* margen entre menú y corazón */
 }
 
 /* Botón hamburguesa */
 .menu-toggle {
   display: none;
-  /* solo visible en móvil */
   font-size: 28px;
   background: none;
   border: none;
@@ -158,7 +156,7 @@ main {
 
 /* ---------- CONTENIDO ---------- */
 .content {
-  margin-top: 3rem;
+  margin-top: 2rem;
 }
 
 /* ---------GRID PELICULAS---------- */
@@ -300,92 +298,8 @@ footer {
   text-align: center;
 }
 
-/* ---------- RESPONSIVE ---------- */
-@media (max-width: 900px) {
-  .peliculas-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
 
-  .principal h1 {
-    font-size: 2rem;
-  }
-
-  .principal h2 {
-    font-size: 1.2rem;
-  }
-}
-
-@media (max-width: 700px) {
-
-  /* Quitar border-radius del contenedor */
-  .cajaprincipal {
-    border-radius: 0;
-  }
-
-  .peliculas-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .modal-contenido {
-    width: 95%;
-    padding: 15px;
-  }
-
-  /* Menú hamburguesa */
-  .menu {
-    position: fixed;
-    top: 0;
-    left: -250px;
-    height: 100vh;
-    width: 230px;
-    background-color: rgb(83, 83, 83);
-    flex-direction: column;
-    padding: 4rem 1rem;
-    gap: 1.2rem;
-    transition: left 0.4s ease;
-    z-index: 1000;
-  }
-
-  .menu ul {
-    flex-direction: column;
-  }
-
-  .menu ul li {
-    display: block;
-    margin: 1rem 0;
-  }
-
-  .menu ul li a {
-    font-size: 1rem;
-    display: block;
-  }
-
-  .menu-toggle {
-    display: block;
-  }
-
-  .menu.show {
-    left: 0;
-  }
-
-  /* Header flex: logo izquierda, menú+corazón derecha */
-  header {
-    justify-content: flex-start;
-   
-    
-  }
-
-  .principal img{
-    z-index: 0;
-  }
-
-  .header-right {
-    margin-left: auto;
-  }
-}
-
-
-/* Header “sticky” cuando se hace scroll */
+/* Header sticky cuando se hace scroll */
 header.sticky {
   position: fixed;
   top: 0;
@@ -457,3 +371,88 @@ header.sticky {
   
   margin-top: 2.5rem;
 }
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 900px) {
+  .peliculas-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .principal h1 {
+    font-size: 2rem;
+  }
+
+  .principal h2 {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 700px) {
+
+  .cajaprincipal {
+    border-radius: 0;
+  }
+
+  .peliculas-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-contenido {
+    width: 95%;
+    padding: 15px;
+  }
+
+  /* Menú hamburguesa */
+  .menu {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    height: 100vh;
+    width: 230px;
+    background-color: rgb(83, 83, 83);
+    flex-direction: column;
+    padding: 4rem 1rem;
+    gap: 1.2rem;
+    transition: left 0.4s ease;
+    z-index: 1000;
+  }
+
+  .menu ul {
+    flex-direction: column;
+  }
+
+  .menu ul li {
+    display: block;
+    margin: 1rem 0;
+  }
+
+  .menu ul li a {
+    font-size: 1rem;
+    display: block;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .menu.show {
+    left: 0;
+  }
+
+  /* Header flex: logo izquierda, menú+corazón derecha */
+  header {
+    justify-content: flex-start;
+   
+    
+  }
+
+  .principal img{
+    z-index: 0;
+  }
+
+  .header-right {
+    margin-left: auto;
+  }
+}
+
+

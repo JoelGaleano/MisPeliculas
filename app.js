@@ -1,4 +1,4 @@
-const API_KEY = '53146dc82d956c126a53f7d5f691e432'; // Reemplazá con tu clave
+const API_KEY = '53146dc82d956c126a53f7d5f691e432'; 
 const URL = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=es-ES&page=1`;
 
 const contenedor = document.getElementById('peliculas');
@@ -9,7 +9,6 @@ const listaFavoritos = document.getElementById('listaFavoritos');
 const favoritosBtn = document.getElementById('favoritosBtn');
 const notificacion = document.getElementById('notificacion');
 
-// 🧠 Cargar favoritos del almacenamiento local
 let favoritos = JSON.parse(localStorage.getItem('favoritos')) || [];
 actualizarContador();
 
@@ -74,7 +73,7 @@ function actualizarContador() {
     contadorFavoritos.textContent = favoritos.length;
 }
 
-// ✅ Modal de favoritos
+// Modal de favoritos
 favoritosBtn.addEventListener('click', (e) => {
     e.preventDefault();
     mostrarFavoritos();
@@ -101,7 +100,7 @@ function mostrarFavoritos() {
   `).join('');
 }
 
-// ✅ Notificación flotante (sin alert)
+// Notificación flotante 
 function mostrarNotificacion(texto) {
     notificacion.textContent = texto;
     notificacion.classList.add('mostrar');
@@ -112,6 +111,8 @@ function mostrarNotificacion(texto) {
 
 cargarPeliculas();
 
+
+// Menu Toggle 
 
 const menuToggle = document.querySelector('.menu-toggle');
 const menu = document.getElementById('menu');
@@ -125,7 +126,7 @@ menuToggle.addEventListener('click', () => {
 
 
 
-
+// Formulario
 
 
 const form = document.getElementById('contactForm');
@@ -151,6 +152,7 @@ form.addEventListener('submit', async (e) => {
 });
 
 
+// Header 
 
 const header = document.querySelector('header');
 const headerHeight = header.offsetHeight;
@@ -158,7 +160,7 @@ const headerHeight = header.offsetHeight;
 window.addEventListener('scroll', () => {
   if (window.scrollY > headerHeight) {
     header.classList.add('sticky');
-    document.body.style.paddingTop = `${headerHeight}px`; // Evita que el contenido suba debajo del header
+    document.body.style.paddingTop = `${headerHeight}px`; 
   } else {
     header.classList.remove('sticky');
     document.body.style.paddingTop = '0';
