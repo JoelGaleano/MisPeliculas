@@ -159,10 +159,10 @@ header.sticky {
 .sliderprincipal {
   position: relative;
   width: 100%;  /* Ocupa todo el ancho */
-  height: 55vh; /* Alto inmersivo */
+  height: 65vh; /* Alto inmersivo */
   overflow: hidden;
   background-color: #000;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
   /* Asegura que empiece arriba */
   margin-top: 0; 
 }
@@ -382,8 +382,10 @@ main {
 
 .pelicula img {
   width: 100%;
-  height: 330px;
-  object-fit: cover;
+  height: auto;           /* AHORA: La altura se ajusta sola */
+  aspect-ratio: 2/3;      /* Mantiene la proporción perfecta de póster de cine */
+  object-fit: cover;      /* Como la proporción es correcta, ya no recortará nada importante */
+  display: block;
 }
 
 .pelicula h3 {
@@ -593,7 +595,7 @@ footer {
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
   }
-  .pelicula img { height: 240px; }
+
   
   .header-right { gap: 10px; }
 }
