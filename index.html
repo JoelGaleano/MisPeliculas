@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css?v=1.1">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css?v=1.4">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
     <title>MisPeliculas</title>
 </head>
 
 <body>
     <div class="cajaprincipal">
         <header>
-            <div class="logo">MisPeliculas</div>
+            <div class="logo"><a href="#home">MisPeliculas</a></div>
 
             <div class="header-right">
                 <a href="#" id="favoritosBtn" class="favoritos-btn">
@@ -31,52 +31,87 @@
             </nav>
         </header>
 
-         <section id="home" class="sliderprincipal">
-    </section>
+        <section id="home" class="sliderprincipal">
+            </section>
 
         <main>
-
             <section id="contenido" class="content">
 
+<div class="search-container">
+    <input type="text" id="searchInput" placeholder="Buscar película...">
+    
+    <button id="clearBtn" class="btn-clear" title="Limpiar">✖</button>
+    
+    <button id="searchBtn">🔍</button>
+</div>
+
                 <h2>Contenido</h2>
-                <p>Explorá las películas más populares del momento:</p>
+                <p id="infoBusqueda">Explorá las películas más populares del momento:</p>
 
-                <!-- Contenedor donde se van a mostrar las películas -->
                 <div id="peliculas" class="peliculas-grid">
-
-                </div>
+                    </div>
 
             </section>
 
-            
             <section id="contacto" class="contacto">
-  <h2>Contacto</h2>
+                <h2>Contacto</h2>
+                <form id="contactForm" action="https://formspree.io/f/xanpgdzl" method="POST" class="form-contacto">
+                    <label for="name">Nombre:</label>
+                    <input type="text" name="name" id="name" placeholder="Tu nombre" required>
 
-  <form id="contactForm" action="https://formspree.io/f/xanpgdzl" method="POST" class="form-contacto">
-    <label for="name">Nombre:</label>
-    <input type="text" name="name" id="name" placeholder="Tu nombre" required>
+                    <label for="email">Email:</label>
+                    <input type="email" name="email" id="email" placeholder="Tu email" required>
 
-    <label for="email">Email:</label>
-    <input type="email" name="email" id="email" placeholder="Tu email" required>
+                    <label for="message">Mensaje:</label>
+                    <textarea name="message" id="message" placeholder="Escribe tu mensaje..." required></textarea>
 
-    <label for="message">Mensaje:</label>
-    <textarea name="message" id="message" placeholder="Escribe tu mensaje..." required></textarea>
+                    <button type="submit">Enviar Mensaje</button>
 
-    <button type="submit">Enviar</button>
-
-    <div id="successMsg" class="form-msg success">¡Formulario enviado!</div>
-    <div id="errorMsg" class="form-msg error">Error al enviar el formulario.</div>
-  </form>
-</section>
-
+                    <div id="successMsg" class="form-msg success">¡Mensaje enviado con éxito!</div>
+                    <div id="errorMsg" class="form-msg error">Hubo un error al enviar.</div>
+                </form>
+            </section>
         </main>
 
-        <footer>
-            <p>© 2025 MisPeliculas. Todos los derechos reservados.</p>
-        </footer>
+       <footer>
+    <div class="footer-content">
+        
+        <div class="footer-section brand">
+            <h3>MisPeliculas</h3>
+            <p>Tu destino favorito para explorar el mundo del cine. Trailers, sinopsis y las últimas novedades en un solo lugar.</p>
+        </div>
+
+        <div class="footer-section links">
+            <h3>Explorar</h3>
+            <ul>
+                <li><a href="#home">Inicio</a></li>
+                <li><a href="#contenido">Novedades</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section social">
+            <h3>Síguenos</h3>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+            </div>
+            <div class="tmdb-credit">
+                <p>Datos provistos por:</p>
+                <img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg" alt="TMDB Logo">
+            </div>
+        </div>
     </div>
 
-    <!-- Modal de Favoritos -->
+    <div class="footer-bottom">
+        <p>&copy; 2025 MisPeliculas | Diseñado con ❤️ para amantes del cine.</p>
+    </div>
+</footer>
+
+    </div>
+
     <div id="modalFavoritos" class="modal">
         <div class="modal-contenido">
             <span id="cerrarModal" class="cerrar">&times;</span>
@@ -85,20 +120,16 @@
         </div>
     </div>
 
-    <!-- Modal de trailer -->
-
     <div id="modalTrailer" class="modal">
-    <div class="modal-contenido modal-video-container">
-        <span id="cerrarModalTrailer" class="cerrar">&times;</span>
-        <iframe id="iframeYoutube" width="100%" height="450" src="" frameborder="0" allowfullscreen></iframe>
+        <div class="modal-contenido modal-video-container">
+            <span id="cerrarModalTrailer" class="cerrar">&times;</span>
+            <iframe id="iframeYoutube" src="" frameborder="0" allowfullscreen></iframe>
+        </div>
     </div>
-</div>
 
-    <!-- Notificación -->
     <div id="notificacion" class="notificacion"></div>
 
-    <script src="app.js?v=1.1"></script>
-    
+    <script src="app.js?v=1.4"></script>
 </body>
 
 </html>

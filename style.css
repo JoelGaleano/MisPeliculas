@@ -1,13 +1,13 @@
 /* =========================================
-   1. VARIABLES Y RESETEO (PREMIUM DARK THEME)
+   1. VARIABLES Y RESETEO (PREMIUM DARK)
    ========================================= */
 :root {
   --primary-color: #e50914;       /* Rojo Netflix */
-  --primary-hover: #ff3d47;       /* Rojo claro hover */
-  --secondary-color: #46d369;     /* Verde éxito/puntos */
+  --primary-hover: #ff3d47;       
+  --secondary-color: #46d369;     /* Verde éxito */
   --bg-dark: #141414;             /* Negro profundo */
   --bg-card: #1f1f1f;             /* Gris oscuro tarjetas */
-  --glass-bg: rgba(20, 20, 20, 0.85); /* Efecto vidrio */
+  --glass-bg: rgba(20, 20, 20, 0.85); /* Efecto vidrio header */
   --nav-height: 70px;
 }
 
@@ -21,43 +21,29 @@ body {
   font-family: 'Roboto', sans-serif;
   background-color: var(--bg-dark);
   color: white;
-  overflow-x: hidden; /* Evita scroll horizontal */
+  overflow-x: hidden;
 }
 
-/* Títulos y Textos */
-h1, h2, h3, h5 {
-  font-weight: 700;
-  color: white;
-}
+h1, h2, h3, h5 { font-weight: 700; color: white; }
+p { color: #e0e0e0; margin-bottom: 1rem; }
 
-p {
-  color: #e0e0e0;
-  margin-bottom: 1rem;
-}
-
-/* Contenedor global: Permite que el header y slider sean 100% */
-.cajaprincipal {
-  width: 100%;
-  margin: 0;
-  overflow: hidden;
-}
+/* Contenedor Global */
+.cajaprincipal { width: 100%; margin: 0; overflow: hidden; }
 
 
 /* =========================================
-   2. HEADER (CRISTAL / STICKY)
+   2. HEADER (CRISTAL)
    ========================================= */
 header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   background-color: var(--glass-bg);
-  backdrop-filter: blur(10px); /* Efecto desenfoque */
+  backdrop-filter: blur(10px);
   padding: 0 2rem;
   height: var(--nav-height);
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
+  top: 0; left: 0; width: 100%;
   z-index: 1000;
   border-bottom: 1px solid rgba(255,255,255,0.1);
   transition: all 0.3s ease;
@@ -68,52 +54,23 @@ header.sticky {
   box-shadow: 0 4px 15px rgba(0,0,0,0.5);
 }
 
-.logo {
+.logo a{
   font-size: 1.8rem;
+  text-decoration: none;
   font-weight: 900;
   color: var(--primary-color);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
+.header-right { display: flex; align-items: center; gap: 20px; }
+.menu-toggle { display: none; font-size: 28px; background: none; border: none; color: white; cursor: pointer; z-index: 1100; }
 
-/* Menú Hamburguesa */
-.menu-toggle {
-  display: none;
-  font-size: 28px;
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  z-index: 1100;
-}
-
-/* Navegación */
-.menu ul {
-  list-style: none;
-  display: flex;
-  gap: 20px;
-}
-
-.menu ul li a {
-  text-decoration: none;
-  color: #ddd;
-  font-weight: 500;
-  font-size: 0.95rem;
-  transition: color 0.3s;
-}
-
+.menu ul { list-style: none; display: flex; gap: 20px; }
+.menu ul li a { text-decoration: none; color: #ddd; font-weight: 500; transition: color 0.3s; }
 .menu ul li a:hover { color: var(--primary-color); }
 
-
-/* =========================================
-   3. BOTÓN FAVORITOS (HEADER)
-   ========================================= */
+/* Botón Favoritos Header */
 .favoritos-btn {
   position: relative;
   font-size: 1rem;
@@ -128,480 +85,561 @@ header.sticky {
   transition: transform 0.2s ease;
   border: 1px solid rgba(255,255,255,0.1);
 }
+.favoritos-btn:hover { transform: scale(1.05); box-shadow: 0 0 15px rgba(14, 117, 185, 0.5); }
 
-.favoritos-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 15px rgba(14, 117, 185, 0.5);
-}
-
-/* Contador (Burbuja Roja) */
 #contadorFavoritos {
-  position: absolute;
-  top: -5px;
-  right: -5px;
+  position: absolute; top: -5px; right: -5px;
   background-color: var(--primary-color);
   color: white;
-  font-size: 11px;
-  font-weight: bold;
-  width: 20px;
-  height: 20px;
+  font-size: 11px; font-weight: bold;
+  width: 20px; height: 20px;
   border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: flex; justify-content: center; align-items: center;
   border: 2px solid #1a1a1a;
 }
 
 
 /* =========================================
-   4. SLIDER FULL WIDTH (BANNER)
+   3. SLIDER PRINCIPAL (FULL WIDTH)
    ========================================= */
 .sliderprincipal {
   position: relative;
-  width: 100%;  /* Ocupa todo el ancho */
-  height: 65vh; /* Alto inmersivo */
+  width: 100%;
+  height: 65vh;
+  aspect-ratio: 16/9;
   overflow: hidden;
   background-color: #000;
-  margin-bottom: 1rem;
-  /* Asegura que empiece arriba */
-  margin-top: 0; 
+  margin-bottom: 2rem;
+  margin-top: 0;
+
+  /* --- EFECTO NEÓN ROJO --- */
+  border-bottom: 3px solid var(--primary-color); /* La línea sólida */
+  /* El truco del neón: una sombra roja brillante hacia abajo */
+  box-shadow: 0 4px 25px rgba(229, 9, 20, 0.6); 
+  z-index: 5; /* Para asegurar que el brillo quede por encima del fondo */
 }
 
 .slide {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 1s ease-in-out;
-  z-index: 1;
-  pointer-events: none; 
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  opacity: 0; transition: opacity 1s ease-in-out;
+  z-index: 1; pointer-events: none;
 }
 
-.slide.active {
-  opacity: 1;
-  z-index: 2;
-  pointer-events: auto;
-}
+.slide.active { opacity: 1; z-index: 2; pointer-events: auto; }
 
 .slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
   filter: brightness(0.6);
 }
 
 .slider-content {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  position: absolute; bottom: 0; left: 0;
+  width: 100%; height: 100%;
   padding: 0 5%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-  padding-bottom: 6rem; /* Espacio abajo */
+  display: flex; flex-direction: column;
+  justify-content: flex-end; align-items: flex-start;
+  padding-bottom: 6rem;
   background: linear-gradient(0deg, var(--bg-dark) 0%, rgba(0,0,0,0.5) 50%, transparent 100%);
   z-index: 3;
 }
 
 .slider-content h1 {
-  font-size: 4rem;
-  text-transform: uppercase;
-  margin-bottom: 1rem;
+  font-size: 4vw; /* Responsive font size */
+  text-transform: uppercase; margin-bottom: 1rem;
   text-shadow: 2px 2px 15px rgba(0,0,0,0.8);
-  max-width: 800px;
-  line-height: 1;
+  max-width: 800px; line-height: 1;
 }
 
 .slider-content p {
-  max-width: 600px;
-  font-size: 1.1rem;
-  line-height: 1.6;
-  color: #e0e0e0;
-  margin-bottom: 2rem;
-  max-height: 120px;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,0.3) transparent;
+  max-width: 600px; font-size: 1.1rem; line-height: 1.6;
+  color: #e0e0e0; margin-bottom: 2rem;
+  max-height: 120px; overflow-y: auto;
+  scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.3) transparent;
   padding-right: 10px;
 }
 
-/* Indicadores (Puntos) */
+/* Indicadores */
 .slider-indicators {
-  position: absolute;
-  bottom: 30px;
-  right: 5%;
-  display: flex;
-  gap: 12px;
-  z-index: 5;
+  position: absolute; bottom: 30px; right: 5%;
+  display: flex; gap: 12px; z-index: 5;
 }
-
 .dot {
-  width: 12px;
-  height: 12px;
+  width: 12px; height: 12px;
   background-color: rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.3s;
+  border-radius: 50%; cursor: pointer; transition: all 0.3s;
 }
-
-.dot.active {
-  background-color: white;
-  transform: scale(1.3);
-  box-shadow: 0 0 10px rgba(255,255,255,0.5);
-}
+.dot.active { background-color: white; transform: scale(1.3); }
 
 
 /* =========================================
-   5. BOTONES (ESTILOS MODERNOS)
+   BUSCADOR PREMIUM (CÁPSULA INTEGRADA)
    ========================================= */
-.botones-wrapper {
+
+.search-container {
+  position: relative;
+  width: 90%;           /* En móvil ocupa el 90% de la pantalla */
+  max-width: 600px;     /* En PC se frena en 600px */
+  margin: 30px auto 40px auto; /* Centrado */
+  
+  /* Diseño de la cápsula */
+  background-color: #1f1f1f; /* Gris oscuro */
+  border: 1px solid #333;
+  border-radius: 50px;  /* Bordes totalmente redondos */
+  padding: 5px 8px;     /* Espacio interno para los botones */
+  
   display: flex;
-  gap: 15px;
-  flex-wrap: wrap;
-}
-
-/* Botón Principal (Favorito) */
-.btn-favorito, 
-.btn-banner-fav {
-  background: linear-gradient(45deg, var(--primary-color), #b20710);
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-weight: bold;
-  text-transform: uppercase;
-  cursor: pointer;
+  align-items: center;  /* Alinea todo al centro verticalmente */
+  justify-content: space-between;
+  
+  transition: all 0.3s ease;
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  transition: all 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
 }
 
-.btn-favorito:hover, 
-.btn-banner-fav:hover {
-  background: linear-gradient(45deg, var(--primary-hover), #e50914);
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
+/* EFECTO NEÓN AL ESCRIBIR (Focus Within) */
+/* Este truco hace que brille el contenedor cuando tocas el input */
+.search-container:focus-within {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 20px rgba(229, 9, 20, 0.4);
+  transform: scale(1.02); /* Crece un poquito */
 }
 
-/* Estado: YA es favorito */
-.is-favorite {
-  background: #333 !important;
-  border: 1px solid #555 !important;
-  color: #aaa !important;
-  box-shadow: none !important;
-}
-.is-favorite:hover {
-  border-color: white !important;
-  color: white !important;
-}
-
-/* Botón Secundario (Trailer - Glass) */
-.btn-trailer {
-  background-color: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(4px);
+.search-container input {
+  background: transparent; /* Transparente para fundirse con la cápsula */
+  border: none;
   color: white;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 4px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+  font-size: 1rem;
+  padding: 10px 15px;
+  flex-grow: 1; /* Ocupa todo el espacio sobrante */
+  outline: none; /* Quitamos el borde azul por defecto */
 }
 
+/* Estilo unificado para los botones dentro de la cápsula */
+.search-container button {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: transform 0.2s, background-color 0.2s;
+  margin-left: 5px; /* Separación entre botones */
+}
+
+/* Botón Lupa (Buscar) */
+#searchBtn {
+  background-color: var(--primary-color);
+  color: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+#searchBtn:hover {
+  background-color: var(--primary-hover);
+  transform: scale(1.1);
+}
+
+/* Botón Limpiar (X) - Sutil */
+.btn-clear {
+  background-color: transparent !important;
+  color: #666 !important;
+  font-size: 0.9rem !important;
+}
+
+.btn-clear:hover {
+  background-color: #333 !important;
+  color: white !important;
+  transform: rotate(90deg); /* Animación de giro */
+}
+
+/* AJUSTE PARA MÓVILES MUY PEQUEÑOS */
+@media (max-width: 400px) {
+  .search-container {
+    padding: 3px;
+  }
+  .search-container input {
+    font-size: 0.9rem; /* Letra un poco más chica para que entre el texto */
+    padding-left: 10px;
+  }
+  .search-container button {
+    width: 32px;
+    height: 32px; /* Botones más compactos */
+  }
+}
+
+/* Estilo específico para el botón de Limpiar */
+.btn-clear {
+  background-color: #333 !important; /* Gris oscuro */
+  color: #888 !important; /* Icono gris claro */
+  border: 1px solid #444 !important;
+}
+
+.btn-clear:hover {
+  background-color: #555 !important; /* Gris más claro al pasar mouse */
+  color: white !important;
+  transform: rotate(90deg) scale(1.1); /* Pequeña rotación divertida */
+}
+
+/* Wrapper de Botones Slider */
+.botones-wrapper { display: flex; gap: 15px; flex-wrap: wrap; }
+
+/* Botones Estilos */
+.btn-favorito, .btn-banner-fav {
+  background: linear-gradient(45deg, var(--primary-color), #b20710);
+  color: white; border: none; border-radius: 4px;
+  font-weight: bold; text-transform: uppercase; cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: 0.3s;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn-favorito:hover, .btn-banner-fav:hover {
+  background: linear-gradient(45deg, var(--primary-hover), #e50914);
+  transform: translateY(-3px); box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
+}
+
+.is-favorite {
+  background: #333 !important; border: 1px solid #555 !important;
+  color: #aaa !important; box-shadow: none !important;
+}
+.is-favorite:hover { border-color: white !important; color: white !important; }
+
+.btn-trailer {
+  background-color: rgba(255, 255, 255, 0.15); backdrop-filter: blur(4px);
+  color: white; border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 4px; font-weight: 600; cursor: pointer; transition: 0.3s;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+}
 .btn-trailer:hover {
-  background-color: white;
-  color: black;
-  transform: translateY(-3px);
+  background-color: white; color: black; transform: translateY(-3px);
   box-shadow: 0 0 15px rgba(255,255,255,0.2);
 }
 
-/* Tamaños específicos */
-.btn-banner-fav,
-.slider-content .btn-trailer {
-  padding: 12px 30px;
-  font-size: 1.1rem;
-}
-
-.pelicula .btn-favorito,
-.pelicula .btn-trailer {
-  width: 100%;
-  padding: 10px;
-  font-size: 0.9rem;
-  margin-top: 8px;
-}
+/* Tamaños */
+.btn-banner-fav, .slider-content .btn-trailer { padding: 12px 30px; font-size: 1.1rem; }
+.pelicula .btn-favorito, .pelicula .btn-trailer { width: 100%; padding: 10px; font-size: 0.9rem; margin-top: 8px; }
 
 
 /* =========================================
-   6. CONTENIDO PRINCIPAL (GRILLA)
+   5. CONTENIDO GRID
    ========================================= */
-main {
-  padding: 2rem;
-  max-width: 1200px; /* Centramos el contenido grid, pero no el slider */
-  margin: 0 auto;
-}
+main { padding: 2rem; max-width: 1200px; margin: 0 auto; }
 
 .content h2 {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
-  border-left: 5px solid var(--primary-color);
-  padding-left: 15px;
+  font-size: 2rem; margin-bottom: 0.5rem;
+  border-left: 5px solid var(--primary-color); padding-left: 15px;
 }
 
 .peliculas-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 25px;
-  margin-top: 30px;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 25px; margin-top: 30px;
 }
 
 .pelicula {
-  background-color: var(--bg-card);
-  border-radius: 8px;
-  overflow: hidden;
-  transition: transform 0.3s ease;
-  border: 1px solid rgba(255,255,255,0.05);
-  padding-bottom: 15px;
+  background-color: var(--bg-card); border-radius: 8px;
+  overflow: hidden; transition: 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px;
 }
-
 .pelicula:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 15px 30px rgba(0,0,0,0.6);
+  transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.6);
   border-color: rgba(255,255,255,0.2);
 }
 
 .pelicula img {
-  width: 100%;
-  height: auto;           /* AHORA: La altura se ajusta sola */
-  aspect-ratio: 2/3;      /* Mantiene la proporción perfecta de póster de cine */
-  object-fit: cover;      /* Como la proporción es correcta, ya no recortará nada importante */
-  display: block;
+  width: 100%; height: auto; aspect-ratio: 2/3;
+  object-fit: cover; display: block;
 }
 
 .pelicula h3 {
-  font-size: 1rem;
-  margin: 12px 10px 5px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 1rem; margin: 12px 10px 5px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 
-.pelicula p {
-  color: var(--secondary-color);
-  font-size: 0.9rem;
-  font-weight: bold;
-  margin: 0 10px 12px;
+/* GÉNERO (Sutil y Minúscula) */
+.pelicula .genero {
+  font-size: 0.75rem; color: #999;
+  margin: -2px 10px 8px; font-weight: 400;
+  text-transform: none; /* Sin mayúsculas forzadas */
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 
-.pelicula button {
-  width: 90%;
-  margin: 5px auto;
-}
+.pelicula p { color: var(--secondary-color); font-size: 0.9rem; font-weight: bold; margin: 0 10px 12px; }
+.pelicula button { width: 90%; margin: 5px auto; }
 
 
 /* =========================================
-   7. MODALES, FOOTER Y FORMULARIO
+   6. CONTACTO (NUEVO DISEÑO PREMIUM)
+   ========================================= */
+.contacto {
+  max-width: 600px;
+  margin: 5rem auto; padding: 40px;
+  background-color: var(--bg-card);
+  border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+  position: relative; overflow: hidden;
+}
+.contacto::before {
+  content: ''; position: absolute; top: 0; left: 0;
+  width: 100%; height: 4px;
+  background: linear-gradient(90deg, var(--primary-color), #b20710);
+}
+
+.contacto h2 {
+  text-align: center; margin-bottom: 2rem;
+  font-size: 2rem; letter-spacing: 1px;
+  border: none; padding: 0;
+}
+
+.form-contacto { display: flex; flex-direction: column; gap: 1.5rem; }
+
+.form-contacto label {
+  font-size: 0.8rem; color: #b3b3b3;
+  text-transform: uppercase; letter-spacing: 1px;
+  margin-bottom: -10px; font-weight: bold;
+}
+
+.form-contacto input, .form-contacto textarea {
+  background-color: #141414; border: 1px solid #333;
+  color: white; padding: 16px; border-radius: 6px;
+  font-size: 1rem; font-family: 'Roboto', sans-serif;
+  transition: all 0.3s ease;
+}
+
+.form-contacto textarea { resize: vertical; min-height: 120px; }
+
+.form-contacto input:focus, .form-contacto textarea:focus {
+  outline: none; border-color: var(--primary-color);
+  box-shadow: 0 0 10px rgba(229, 9, 20, 0.2); background-color: #1a1a1a;
+}
+
+.form-contacto button {
+  margin-top: 10px; padding: 16px;
+  background: linear-gradient(45deg, var(--primary-color), #b20710);
+  color: white; border: none; border-radius: 6px;
+  font-size: 1rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;
+  cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.form-contacto button:hover {
+  transform: translateY(-2px); box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
+  background: linear-gradient(45deg, var(--primary-hover), #e50914);
+}
+
+.form-msg {
+  text-align: center; margin-top: 15px; padding: 10px;
+  border-radius: 4px; font-weight: 500; display: none;
+}
+.form-msg.success { background: rgba(70,211,105,0.1); color: var(--secondary-color); border: 1px solid var(--secondary-color); }
+.form-msg.error { background: rgba(229,9,20,0.1); color: var(--primary-color); border: 1px solid var(--primary-color); }
+
+
+/* =========================================
+   7. MODALES Y UTILIDADES
    ========================================= */
 .modal {
-  display: none;
-  position: fixed;
-  z-index: 2000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
+  display: none; position: fixed; z-index: 2000;
+  left: 0; top: 0; width: 100%; height: 100%;
   background-color: rgba(0, 0, 0, 0.9);
-  justify-content: center;
-  align-items: center;
-  backdrop-filter: blur(5px);
+  justify-content: center; align-items: center; backdrop-filter: blur(5px);
 }
-
 .modal-contenido {
-  background-color: #222;
-  padding: 25px;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 800px;
-  color: white;
-  position: relative;
-  border: 1px solid #444;
-  max-height: 80vh;
-  overflow-y: auto;
+  background-color: #222; padding: 25px; border-radius: 12px;
+  width: 90%; max-width: 800px; color: white; position: relative;
+  border: 1px solid #444; max-height: 80vh; overflow-y: auto;
 }
-
 .modal-video-container {
-  background: black;
-  padding: 0;
-  max-width: 900px;
-  width: 95%;
-  display: flex;
-  overflow: hidden;
+  background: black; padding: 0; max-width: 900px; width: 95%;
+  display: flex; overflow: hidden;
 }
-.modal-video-container iframe {
-  aspect-ratio: 16/9;
-  width: 100%;
-  height: auto;
-}
+.modal-video-container iframe { aspect-ratio: 16/9; width: 100%; height: auto; }
 
-.cerrar {
-  position: absolute;
-  right: 15px;
-  top: 10px;
-  font-size: 28px;
-  cursor: pointer;
-  color: #aaa;
-  z-index: 10;
-}
+.cerrar { position: absolute; right: 15px; top: 10px; font-size: 28px; cursor: pointer; color: #aaa; z-index: 10; }
 .cerrar:hover { color: white; }
 
-.lista-favoritos {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 15px;
-  margin-top: 20px;
-}
-
-.item-favorito {
-  background-color: #333;
-  border-radius: 8px;
-  padding: 10px;
-  text-align: center;
-}
+.lista-favoritos { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; margin-top: 20px; }
+.item-favorito { background: #333; border-radius: 8px; padding: 10px; text-align: center; }
 .item-favorito img { width: 100%; border-radius: 4px; }
-.item-favorito button {
-  background-color: var(--primary-color);
-  border: none;
-  color: white;
-  padding: 5px;
-  width: 100%;
-  margin-top: 5px;
-  cursor: pointer;
-}
+.item-favorito button { background: var(--primary-color); border: none; color: white; padding: 5px; width: 100%; margin-top: 5px; cursor: pointer; }
 
 /* Notificación */
 .notificacion {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  background-color: #333;
-  color: white;
-  padding: 15px 25px;
-  border-radius: 8px;
-  border-left: 5px solid var(--secondary-color);
-  transform: translateY(20px);
-  opacity: 0;
-  transition: all 0.4s ease;
-  z-index: 3000;
+  position: fixed; bottom: 30px; right: 30px;
+  background-color: #333; color: white; padding: 15px 25px;
+  border-radius: 8px; border-left: 5px solid var(--secondary-color);
+  transform: translateY(20px); opacity: 0; transition: 0.4s; z-index: 3000;
 }
 .notificacion.mostrar { opacity: 1; transform: translateY(0); }
 
-/* Footer */
+/* =========================================
+   FOOTER PREMIUM (MULTICOLUMNA)
+   ========================================= */
 footer {
-  text-align: center;
-  padding: 2rem;
-  background-color: #0a0a0a;
-  color: #666;
-  font-size: 0.9rem;
+  background-color: #050505; /* Casi negro puro */
+  color: #b3b3b3;
+  padding: 60px 0 20px;
+  margin-top: 4rem;
   border-top: 1px solid #222;
+  font-size: 0.9rem;
 }
 
-/* Contacto */
-.contacto { margin-top: 3rem; }
-.form-contacto { display: flex; flex-direction: column; gap: 1rem; max-width: 600px; margin: 1rem auto; }
-.form-contacto input, .form-contacto textarea {
-  padding: 12px; background: #333; border: 1px solid #444; color: white; border-radius: 6px;
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 40px;
+  padding: 0 20px;
 }
-.form-contacto button {
-  padding: 12px; background: var(--secondary-color); border: none; border-radius: 6px; font-weight: bold; cursor: pointer;
+
+.footer-section h3 {
+  color: white;
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+  position: relative;
+  display: inline-block;
 }
-.form-msg { display: none; text-align: center; margin-top: 10px; }
-.form-msg.success { color: var(--secondary-color); }
-.form-msg.error { color: var(--primary-color); }
+
+/* Pequeña línea roja debajo de los títulos */
+.footer-section h3::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 30px;
+  height: 2px;
+  background-color: var(--primary-color);
+}
+
+.footer-section p {
+  line-height: 1.6;
+  color: #999;
+}
+
+/* Estilo de los links del footer */
+.footer-section ul {
+  list-style: none;
+}
+
+.footer-section ul li {
+  margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+  color: #b3b3b3;
+  text-decoration: none;
+  transition: color 0.3s, padding-left 0.3s;
+}
+
+.footer-section ul li a:hover {
+  color: var(--primary-color);
+  padding-left: 5px; /* Efecto de desplazamiento */
+}
+
+/* Iconos Sociales */
+.social-icons {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.social-icons a {
+  width: 40px;
+  height: 40px;
+  background-color: #1f1f1f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  color: white;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 1px solid #333;
+}
+
+.social-icons a:hover {
+  background-color: var(--primary-color);
+  transform: translateY(-3px);
+  border-color: var(--primary-color);
+}
+
+/* Logo TMDB */
+.tmdb-credit p {
+  font-size: 0.8rem;
+  margin-bottom: 5px;
+}
+
+.tmdb-credit img {
+  width: 80px; /* Tamaño discreto */
+  opacity: 0.8;
+}
+
+/* Barra inferior de Copyright */
+.footer-bottom {
+  text-align: center;
+  margin-top: 50px;
+  padding-top: 20px;
+  border-top: 1px solid #1a1a1a;
+  color: #666;
+  font-size: 0.85rem;
+}
+
+/* Ajuste Responsive */
+@media (max-width: 768px) {
+  .footer-content {
+    text-align: center;
+  }
+  
+  .footer-section h3::after {
+    left: 50%;
+    transform: translateX(-50%); /* Centrar la línea roja */
+  }
+  
+  .social-icons {
+    justify-content: center;
+  }
+}
 
 
 /* =========================================
-   8. RESPONSIVE (MÓVILES)
+   8. RESPONSIVE (MÓVIL)
    ========================================= */
 @media (max-width: 900px) {
-  .sliderprincipal { height: 60vh; }
   .slider-content h1 { font-size: 3rem; }
 }
 
 @media (max-width: 768px) {
   header { padding: 0 1rem; }
-
-  /* Botón Hamburguesa visible */
   .menu-toggle { display: block; }
-  
-  /* Menú Lateral */
   .menu {
-    position: fixed;
-    top: 0;
-    left: -100%;
-    height: 100vh;
-    width: 260px;
-    background-color: #111;
-    flex-direction: column;
-    padding: 5rem 2rem;
-    transition: 0.4s ease;
-    box-shadow: 5px 0 15px rgba(0,0,0,0.8);
+    position: fixed; top: 0; left: -100%; height: 100vh; width: 260px;
+    background-color: #111; flex-direction: column; padding: 5rem 2rem;
+    transition: 0.4s ease; box-shadow: 5px 0 15px rgba(0,0,0,0.8);
   }
   .menu.show { left: 0; }
   .menu ul { flex-direction: column; }
-  
-  /* SOLUCIÓN: Botón Favoritos Compacto en Móvil */
-  .favoritos-btn h5 { display: none; /* Ocultamos texto */ }
-  .favoritos-btn {
-    padding: 0;
-    width: 42px;
-    height: 42px;
-    border-radius: 50%; /* Círculo */
-    justify-content: center;
-  }
-  /* Agregamos el corazón via CSS para reemplazar al h5 */
-  .favoritos-btn::before {
-    content: "❤️";
-    font-size: 1.2rem;
-  }
-  /* Ajustamos burbuja */
+
+  /* Botón Favoritos REDONDO en Móvil */
+  .favoritos-btn h5 { display: none; }
+  .favoritos-btn { padding: 0; width: 42px; height: 42px; border-radius: 50%; justify-content: center; }
+  .favoritos-btn::before { content: "❤️"; font-size: 1.2rem; }
   #contadorFavoritos { top: -2px; right: -2px; width: 18px; height: 18px; font-size: 10px; }
 
-  /* Ajustes Slider Móvil */
-  .sliderprincipal { height: 55vh; }
-  .slider-content {
-    padding-bottom: 3rem;
-    background: linear-gradient(0deg, rgba(0,0,0,1) 0%, transparent 100%);
-  }
-  .slider-content h1 { font-size: 1.8rem; }
-  .slider-content p { display: none; } /* Ocultar descripción */
+  /* Slider Móvil */
+  .sliderprincipal { height: 60vh; aspect-ratio: auto; }
+  .slider-content { padding-bottom: 3rem; background: linear-gradient(0deg, rgba(0,0,0,1) 0%, transparent 100%); }
+  .slider-content h1 { font-size: 2rem; }
+  .slider-content p { display: none; }
   
-  /* Botones pequeños */
-  .btn-banner-fav, .slider-content .btn-trailer {
-    padding: 10px 16px;
-    font-size: 0.85rem;
-  }
-
-  .peliculas-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-  }
-
-  
+  .btn-banner-fav, .slider-content .btn-trailer { padding: 10px 16px; font-size: 0.85rem; }
+  .peliculas-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
   .header-right { gap: 10px; }
+  
+  /* Ajuste de formulario en móvil */
+  .contacto { padding: 25px; margin: 3rem 1rem; }
 }
 
 @media (max-width: 480px) {
   .peliculas-grid { grid-template-columns: 1fr; }
   .slider-indicators { right: 50%; transform: translateX(50%); }
 }
-

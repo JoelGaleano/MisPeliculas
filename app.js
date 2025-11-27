@@ -1,11 +1,20 @@
 const API_KEY = '53146dc82d956c126a53f7d5f691e432'; 
-const URL = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=es-ES&page=1`;
+// URLs Base
+const URL_POPULAR = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=es-ES&page=1`;
+const URL_SEARCH = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=es-ES&include_adult=false&query=`;
+const URL_GENRES = `https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}&language=es-ES`;
 
 // --- DOM ELEMENTS ---
 const sliderContainer = document.querySelector('.sliderprincipal');
 const contenedor = document.getElementById('peliculas');
 
-// Favoritos DOM
+// Buscador
+const searchInput = document.getElementById('searchInput');
+const searchBtn = document.getElementById('searchBtn');
+const clearBtn = document.getElementById('clearBtn');
+const infoBusqueda = document.getElementById('infoBusqueda');
+
+// Favoritos
 const contadorFavoritos = document.getElementById('contadorFavoritos');
 const modal = document.getElementById('modalFavoritos');
 const cerrarModal = document.getElementById('cerrarModal');
@@ -13,30 +22,96 @@ const listaFavoritos = document.getElementById('listaFavoritos');
 const favoritosBtn = document.getElementById('favoritosBtn');
 const notificacion = document.getElementById('notificacion');
 
-// Trailer DOM
+// Trailer
 const modalTrailer = document.getElementById('modalTrailer');
 const iframeYoutube = document.getElementById('iframeYoutube');
 const cerrarModalTrailer = document.getElementById('cerrarModalTrailer');
 
-// --- INICIALIZACIÓN ---
+// Variables
 let favoritos = JSON.parse(localStorage.getItem('favoritos')) || [];
-actualizarContador();
-cargarBanner();
-cargarPeliculas();
+let listaGeneros = []; 
+
+// --- INICIALIZACIÓN ---
+init();
+
+async function init() {
+    await cargarGeneros(); // Cargamos diccionario de géneros primero
+    actualizarContador();
+    cargarBanner();
+    cargarPeliculas(URL_POPULAR); // Cargamos populares por defecto
+}
+
 
 // ==================================================================
-// 1. LÓGICA DE TRAILERS (NUEVO)
+// 0. LÓGICA DE GÉNEROS Y BÚSQUEDA
 // ==================================================================
 
-// Función global para ser llamada desde el HTML
+// Obtener lista de géneros
+async function cargarGeneros() {
+    try {
+        const res = await fetch(URL_GENRES);
+        const data = await res.json();
+        listaGeneros = data.genres; 
+    } catch (error) {
+        console.error('Error cargando géneros:', error);
+    }
+}
+
+// Convertir IDs a Nombres
+function obtenerNombresGeneros(idsArray) {
+    if (!idsArray || idsArray.length === 0) return "Sin categoría";
+    
+    const nombres = idsArray.map(id => {
+        const genero = listaGeneros.find(g => g.id === id);
+        return genero ? genero.name : null;
+    }).filter(nombre => nombre !== null);
+
+    // Devolvemos solo los 2 primeros
+    return nombres.slice(0, 2).join(", ");
+}
+
+// Buscador
+searchBtn.addEventListener('click', () => ejecutarBusqueda());
+searchInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') ejecutarBusqueda();
+});
+
+function ejecutarBusqueda() {
+    const query = searchInput.value.trim();
+    if (query) {
+        // CAMBIO DE TEXTO DINÁMICO
+        infoBusqueda.textContent = `Resultados para: "${query}"`;
+        
+        cargarPeliculas(URL_SEARCH + encodeURIComponent(query));
+        contenedor.scrollIntoView({ behavior: 'smooth' });
+    } else {
+        // Si está vacío, volvemos al texto original
+        infoBusqueda.textContent = 'Explorá las películas más populares del momento:';
+        cargarPeliculas(URL_POPULAR);
+    }
+}
+
+// Lógica del botón Limpiar
+clearBtn.addEventListener('click', () => {
+    searchInput.value = ''; 
+    
+    // RESTAURAR TEXTO ORIGINAL
+    infoBusqueda.textContent = 'Explorá las películas más populares del momento:';
+    
+    cargarPeliculas(URL_POPULAR); 
+    searchInput.focus();
+});
+
+
+// ==================================================================
+// 1. LÓGICA DE TRAILERS
+// ==================================================================
 window.verTrailer = async (id) => {
     try {
-        // 1. Buscar trailer en Español
         let res = await fetch(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${API_KEY}&language=es-ES`);
         let data = await res.json();
         let video = data.results.find(v => v.site === 'YouTube' && v.type === 'Trailer');
 
-        // 2. Si no hay en español, buscar en Inglés (Fallback)
         if (!video) {
             res = await fetch(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${API_KEY}&language=en-US`);
             data = await res.json();
@@ -44,28 +119,23 @@ window.verTrailer = async (id) => {
         }
 
         if (video) {
-            // 3. Abrir Modal
             iframeYoutube.src = `https://www.youtube.com/embed/${video.key}?autoplay=1`;
             modalTrailer.style.display = 'flex';
         } else {
             mostrarNotificacion('❌ Lo siento, no hay trailer disponible.');
         }
-
     } catch (error) {
         console.error('Error al buscar trailer:', error);
         mostrarNotificacion('❌ Error al cargar el video.');
     }
 };
 
-// Cerrar Modal de Trailer (Detiene el video limpiando el src)
 if(cerrarModalTrailer) {
     cerrarModalTrailer.addEventListener('click', () => {
         modalTrailer.style.display = 'none';
         iframeYoutube.src = ''; 
     });
 }
-
-// Cerrar clickeando afuera (para ambos modales)
 window.addEventListener('click', (e) => {
     if (e.target === modalTrailer) {
         modalTrailer.style.display = 'none';
@@ -78,21 +148,17 @@ window.addEventListener('click', (e) => {
 
 
 // ==================================================================
-// 2. LÓGICA DE FAVORITOS (TOGGLE)
+// 2. LÓGICA DE FAVORITOS
 // ==================================================================
-
 function toggleFavorito(pelicula) {
-    // Comparamos IDs como string para evitar errores
     const index = favoritos.findIndex(p => String(p.id) === String(pelicula.id));
     let fueAgregado = false;
 
     if (index !== -1) {
-        // YA EXISTE -> BORRAR
         favoritos.splice(index, 1);
         mostrarNotificacion(`❌ Eliminada de favoritos`);
         fueAgregado = false;
     } else {
-        // NO EXISTE -> AGREGAR
         favoritos.push(pelicula);
         mostrarNotificacion(`❤️ ${pelicula.title} agregada a favoritos`);
         fueAgregado = true;
@@ -100,10 +166,7 @@ function toggleFavorito(pelicula) {
 
     localStorage.setItem('favoritos', JSON.stringify(favoritos));
     actualizarContador();
-    
-    // Si el modal de favoritos está abierto, refrescarlo
     if(modal.style.display === 'flex') mostrarFavoritos();
-
     return fueAgregado;
 }
 
@@ -121,33 +184,26 @@ function actualizarBotonUI(boton, esFavorito) {
     }
 }
 
-// Helper para el botón del Banner
 window.toggleDesdeBanner = (btnElement, id, title, poster, voto) => {
     const pelicula = { id, title, poster, voto };
     const ahoraEsFavorito = toggleFavorito(pelicula);
-    
-    // 1. Actualizar este botón
     actualizarBotonUI(btnElement, ahoraEsFavorito);
-
-    // 2. Intentar actualizar el botón de la grilla si existe
     const btnGrilla = document.querySelector(`.btn-favorito[data-id="${id}"]`);
     if(btnGrilla) actualizarBotonUI(btnGrilla, ahoraEsFavorito);
 };
 
 
 // ==================================================================
-// 3. BANNER / SLIDER PRINCIPAL
+// 3. BANNER / SLIDER
 // ==================================================================
 async function cargarBanner() {
     try {
-        const res = await fetch(URL);
+        const res = await fetch(URL_POPULAR);
         const data = await res.json();
         const peliculasBanner = data.results.slice(0, 3);
 
         const slidesHTML = peliculasBanner.map((p, index) => {
-            // Sanitizar título para evitar error con comillas simples
             const tituloSafe = p.title.replace(/'/g, "\\'"); 
-            
             const yaEsFavorito = esFavorito(p.id);
             const textoBtn = yaEsFavorito ? "❌ Eliminar favorito" : "❤️ Agregar a Favoritos";
             const claseBtn = yaEsFavorito ? "is-favorite" : "";
@@ -158,13 +214,11 @@ async function cargarBanner() {
                 <div class="slider-content">
                     <h1>${p.title}</h1>
                     <p>${p.overview}</p>
-                    
                     <div class="botones-wrapper">
                         <button class="btn-banner-fav ${claseBtn}" 
                             onclick="toggleDesdeBanner(this, '${p.id}', '${tituloSafe}', '${p.poster_path}', '${p.vote_average}')">
                             ${textoBtn}
                         </button>
-                        
                         <button class="btn-trailer" onclick="verTrailer('${p.id}')">
                             ▶ Ver Trailer
                         </button>
@@ -183,7 +237,6 @@ async function cargarBanner() {
 
         sliderContainer.innerHTML = slidesHTML + dotsHTML;
         iniciarSlider();
-
     } catch (error) {
         console.error('Error cargando banner:', error);
     }
@@ -196,6 +249,7 @@ function iniciarSlider() {
     let slideInterval;
 
     const showSlide = (index) => {
+        if(slides.length === 0) return;
         slides.forEach(slide => slide.classList.remove('active'));
         dots.forEach(dot => dot.classList.remove('active'));
         slides[index].classList.add('active');
@@ -203,11 +257,13 @@ function iniciarSlider() {
     };
 
     const nextSlide = () => {
+        if(slides.length === 0) return;
         currentSlide = (currentSlide + 1) % slides.length;
         showSlide(currentSlide);
     };
 
     const startAutoSlide = () => {
+        if(slideInterval) clearInterval(slideInterval);
         slideInterval = setInterval(nextSlide, 5000);
     };
 
@@ -225,23 +281,36 @@ function iniciarSlider() {
 
 
 // ==================================================================
-// 4. GRILLA DE PELÍCULAS
+// 4. GRILLA DE PELÍCULAS (CON GÉNEROS Y BÚSQUEDA)
 // ==================================================================
-async function cargarPeliculas() {
+async function cargarPeliculas(url) {
     try {
-        const res = await fetch(URL);
+        const res = await fetch(url);
         const data = await res.json();
+
+        if (data.results.length === 0) {
+            contenedor.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">No se encontraron resultados 😢</p>';
+            return;
+        }
 
         contenedor.innerHTML = data.results.map(p => {
             const yaEsFavorito = esFavorito(p.id);
             const textoBtn = yaEsFavorito ? "❌ Eliminar favorito" : "❤️ Agregar a favorito";
             const claseBtn = yaEsFavorito ? "is-favorite" : "";
+            
+            // Nombre de Géneros
+            const nombreGeneros = obtenerNombresGeneros(p.genre_ids);
+            
+            const posterUrl = p.poster_path 
+                ? `https://image.tmdb.org/t/p/w500${p.poster_path}` 
+                : 'https://via.placeholder.com/500x750?text=No+Image';
 
             return `
             <div class="pelicula">
-                <img src="https://image.tmdb.org/t/p/w500${p.poster_path}" alt="${p.title}">
+                <img src="${posterUrl}" alt="${p.title}">
                 <h3>${p.title}</h3>
-                <p>⭐ ${p.vote_average.toFixed(2)}</p>
+                <p class="genero">${nombreGeneros}</p>
+                <p>⭐ ${p.vote_average ? p.vote_average.toFixed(2) : 'N/A'}</p>
                 
                 <button class="btn-favorito ${claseBtn}" 
                     data-id="${p.id}" 
@@ -259,7 +328,6 @@ async function cargarPeliculas() {
             </div>
         `}).join('');
 
-        // Event Listeners para los botones de la grilla
         document.querySelectorAll('.btn-favorito').forEach(boton => {
             boton.addEventListener('click', (e) => {
                 const btn = e.target;
@@ -269,7 +337,6 @@ async function cargarPeliculas() {
                     poster: btn.dataset.poster,
                     voto: btn.dataset.voto
                 };
-                
                 const ahoraEsFavorito = toggleFavorito(peli);
                 actualizarBotonUI(btn, ahoraEsFavorito);
             });
@@ -282,19 +349,14 @@ async function cargarPeliculas() {
 
 
 // ==================================================================
-// 5. UTILIDADES Y UI
+// 5. UTILIDADES
 // ==================================================================
-
-function actualizarContador() {
-    contadorFavoritos.textContent = favoritos.length;
-}
+function actualizarContador() { contadorFavoritos.textContent = favoritos.length; }
 
 window.eliminarFavorito = (id) => {
     const peli = favoritos.find(p => String(p.id) === String(id));
     if(peli) {
         toggleFavorito(peli); 
-        
-        // Actualizar UI en la grilla si corresponde
         const btnGrilla = document.querySelector(`.btn-favorito[data-id="${id}"]`);
         if(btnGrilla) actualizarBotonUI(btnGrilla, false);
     }
@@ -309,7 +371,6 @@ function mostrarFavoritos() {
         <div class="item-favorito">
             <img src="https://image.tmdb.org/t/p/w300${p.poster}" alt="${p.title}">
             <h4>${p.title}</h4>
-            <p>⭐ ${parseFloat(p.voto).toFixed(2)}</p>
             <button onclick="eliminarFavorito('${p.id}')">Eliminar</button>
         </div>
     `).join('');
@@ -323,24 +384,17 @@ function mostrarNotificacion(texto) {
     }, 2500);
 }
 
-// Eventos Modal Favoritos
 favoritosBtn.addEventListener('click', (e) => {
     e.preventDefault();
     mostrarFavoritos();
     modal.style.display = 'flex';
 });
-cerrarModal.addEventListener('click', () => {
-    modal.style.display = 'none';
-});
+cerrarModal.addEventListener('click', () => modal.style.display = 'none');
 
-// Menu Toggle
 const menuToggle = document.querySelector('.menu-toggle');
 const menu = document.getElementById('menu');
-menuToggle.addEventListener('click', () => {
-    menu.classList.toggle('show');
-});
+menuToggle.addEventListener('click', () => menu.classList.toggle('show'));
 
-// Sticky Header
 const header = document.querySelector('header');
 const headerHeight = header.offsetHeight;
 window.addEventListener('scroll', () => {
@@ -353,7 +407,6 @@ window.addEventListener('scroll', () => {
   }
 });
 
-// Formulario de Contacto
 const form = document.getElementById('contactForm');
 if(form){
     form.addEventListener('submit', async (e) => {
