@@ -179,9 +179,9 @@ header.sticky {
 
 .search-container {
   position: relative;
-  width: 90%;           /* En móvil ocupa el 90% de la pantalla */
+  width: 100%;           /* En móvil ocupa el 90% de la pantalla */
   max-width: 600px;     /* En PC se frena en 600px */
-  margin: 30px auto 40px auto; /* Centrado */
+  margin: 0px auto 40px auto; /* Centrado */
   
   /* Diseño de la cápsula */
   background-color: #1f1f1f; /* Gris oscuro */
